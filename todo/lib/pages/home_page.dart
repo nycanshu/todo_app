@@ -12,6 +12,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  //text controller
+  final _controller = TextEditingController();
   List todolist = [
     ['Make Todo', false],
     ['Learning Flutter', false]
@@ -24,12 +26,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //function for saving new tasks
+  void saveNewTask() {
+    setState(() {
+      todolist.add([_controller.text, false]);
+    });
+    Navigator.of(context).pop();
+    _controller.clear();
+  }
+
   //function to create new task in floating action button
   void createNewTask() {
     showDialog(
       context: context,
       builder: (context) {
-        return dialogBox();
+        return dialogBox(
+          controller: _controller,
+          onCancel: () => Navigator.of(context).pop(),
+          onSave: saveNewTask,
+        );
       },
     );
   }
